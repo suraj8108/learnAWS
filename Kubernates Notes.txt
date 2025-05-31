@@ -1,0 +1,385 @@
+
+Kubernates:
+https://ubuntu.com/kubernetes/what-is-kubernetes
+
+Kubernates is an open source platform which was first disclosed by google.
+
+Container orchestrators are designed to run complex applications with large numbers of scalable components.
+
+Load Balancer 	->They work by inspecting the underlying infrastructure and determining the best server to run each container.
+
+Scalable 	-> They can scale to thousands of computers and tens of thousands of containers and still work efficiently and reliably.
+
+Containers are the blocks, servers are the boards, and the container orchestrator is the player.
+
+Container orchestration is about managing the lifecycle of containers, particularly in large, dynamic environments.
+It automates the deployment, networking, scaling, and availability of containerised workloads and services. 
+
+----------------------------------------------------------------------------
+Kubernates Cluster:
+	A Kubernetes cluster is what you get when you deploy Kubernetes on physical or virtual machines. It consists of two types of machines:
+		Workers: the resources used to run the services needed to host containerised workloads
+		Control plane hosts: used to manage the workers and monitor the health of the entire system
+	
+	-> Every cluster has at least one worker, and the control plane services can be colocated on a single machine. 
+	-> In production environments, there is typically a large number of workers, depending on the number of containers to be run, 
+	   and the control plane is distributed across multiple machines for high-availability and fault-tolerance purposes.
+
+Advantages of Kubernates:
+https://scoutapm.com/blog/kubernetes-advantages-disadvantages
+	-> Automatic Packing
+	-> Kubernetes Automates Containerized Environments
+	-> Scaling Up and Down
+	-> Self Healing
+	-> Powerful CI/CD
+	-> Storage Orchestration
+	-> Strong Open Source Communities
+	-> Cost Efficiencies and Savings
+	-> Ability to Run Anywhere
+	-> Improve Developer Productivity
+	-> Enhanced Security
+	-> Network Encryption
+
+Disadvantage of Kubernates
+	-> Steep Learning Curve : One of the most apparent issues with adopting Kubernetes is that it is difficult to learn. 
+	-> Initial Configuration Difficult
+	-> Migration Appears Unproductive
+	-> Infrastructure Can Cost More Than the Total Profit
+--------------------------------------------------------------------
+
+There are two ways of Kubernates Cluster Creation:
+	1) User Public Cloud	 (Google Kubernetes Service (GKE), Azure Kubernetes Service (AKS), or Amazon Elastic Kubernetes Service (EKS))	
+	2) Installing Kubernetes yourself on cloud or on-premises infrastructure with a Kubernetes installation tool like kubeadm or kops
+	3) Creating a Kubernetes cluster on your local machine with a tool like Minikube, MicroK8s, or k3s
+---------------------------------------------------------------------
+
+Kubernates Components:
+https://kubernetes.io/docs/concepts/overview/components/
+https://avinetworks.com/glossary/kubernetes-architecture/
+https://ubuntu.com/kubernetes/what-is-kubernetes
+
+Control Plane Components:
+	apiServer:
+		-> Frontend for the control plane
+		-> The main implementation of a Kubernetes API server is kube-apiserver. kube-apiserver is designed to scale 
+		   horizontally—that is, it scales by deploying more instances.
+		-> You can run several instances of kube-apiserver and balance traffic between those instances
+		-> Clients must be able to access the API server from outside the cluster,
+		-> 
+	etcd
+		-> Distributed and fault-tolerant, etcd is an open source, key-value store database that stores configuration data and 
+		   information about the state of the cluster. etcd may be configured externally, although it is often part of the 
+		   Kubernetes control plane.
+	
+	kube scheduler
+		-> Control plane component that watches for newly created Pods with no assigned node, and selects a node for them to run on.
+		-> The Kubernetes scheduler stores the resource usage data for each compute node; determines whether a cluster is healthy; 
+		   and determines whether new containers should be deployed, and if so, where they should be placed. 
+	
+	Kubernetes Controller Manager
+		-> It is a daemon which runs the Kubernetes cluster using several controller functions.
+		-> The Kubernetes controller also performs core lifecycle functions.
+
+Node Component
+	A Kubernetes cluster must have at least one compute node, although it may have many, depending on the need for capacity.
+
+	Kubelet service
+		-> Each compute node includes a kubelet, an agent that communicates with the control plane to ensure the containers
+		   in a pod are running. When the control plane requires a specific action happen in a node, the kubelet receives the 
+		   pod specifications through the API server and executes the action. It then ensures the associated containers are healthy
+		   and running.
+
+	Kube-proxy service
+		-> The kube-proxy runs on each node to ensure that services are available to external parties and deal with individual
+		   host subnetting.
+
+	kubectl
+		-> A command-line tool for controlling Kubernetes clusters.
+	
+	kubeadm: the command to bootstrap the cluster. 
+	kubelet: the component that runs on all of the machines in your cluster and does things like starting PODs and containers. 
+	kubectl: the command line until to talk to your cluster.
+
+----------------------------------------------------------------------
+
+Kubectl is the primary Kubernetes CLI — you use it for all interactions with a Kubernetes cluster, no matter how the cluster was created.
+
+A Pod is a wrapper around one or more containers.
+If a Pod contains multiple containers, they are treated by Kubernetes as a unit — for example, they are started and stopped together 
+and executed on the same node.
+
+A Pod is the smallest unit of deployment in Kubernetes — you never work with containers directly, but with Pods that wrap containers.
+
+
+
+--------------------------------------------------------------------------
+Labels and Selector:
+	
+	kubectl get nodes --show-labels
+	kubectl label node k8s-worker2 color=green
+
+--------------------------------------------------------------------------
+
+Kubernates Services
+https://medium.com/devops-mojo/kubernetes-service-types-overview-introduction-to-k8s-service-types-what-are-types-of-kubernetes-services-ea6db72c3f8c
+https://www.vmware.com/topics/glossary/content/kubernetes-services.html
+
+ClusterIP:
+	ClusterIP is the default and most common service type.
+	Kubernetes will assign a cluster-internal IP address to ClusterIP service. This makes the service only reachable within the cluster.
+	You cannot make requests to service (pods) from outside the cluster.
+	You can optionally set cluster IP in the service definition file.
+
+	Just Mention:
+		name: http
+		protocol: TCP
+		port: 80
+		targetPort: 8080
+
+Kubernetes Headless Service:
+	Services that do not need load balancing and only expose a single IP can create a ‘headless’ service by specifying “none” 
+	as the clusterIP.
+
+	It is used for discovering individual pods(especially IPs) which allows another service to interact directly with the Pods instead 
+	of a proxy. With NodePort, LoadBalancer, ExternalName, and ClusterIP clients usually connect to the pods through a Service
+	(Kubernetes Services simply visually explained) rather than connecting directly.
+
+	 with a headless service, clients can connect to its pods by connecting to the service’s DNS name, as they can with regular services.
+	 But with headless services, because DNS returns the pods’ IPs, clients connect directly to the pods, instead of through the 
+	service proxy.
+
+	Headless services still provide load balancing across pods but through the DNS round-robin mechanism instead of through the
+	service proxy.
+
+NodePort:
+	
+	Node port must be in the range of 30000–32767. Manually allocating a port to the service is optional. 
+	If it is undefined, Kubernetes will automatically assign one.
+	
+	You can contact the NodePort Service, from outside the cluster, by requesting <NodeIP>:<NodePort>.
+	Using a NodePort gives you the freedom to set up your own load balancing solution, to configure environments that are not fully 
+	supported by Kubernetes, or even to expose one or more nodes’ IPs directly.
+	
+	protocol: TCP
+	port: 80
+	targetPort: 8080
+	nodePort: 300000
+
+LoadBalancer:
+	LoadBalancer service is an extension of NodePort service.
+	NodePort and ClusterIP Services, to which the external load balancer routes, are automatically created.
+		
+	Each cloud provider (AWS, Azure, GCP, etc) has its own native load balancer implementation. 
+	The cloud provider will create a load balancer, which then automatically routes requests to your Kubernetes Service.
+
+	Traffic from the external load balancer is directed at the backend Pods. The cloud provider decides how it is load balanced.
+
+ExternalName:
+	 Maps a service to a predefined externalName field by returning a value for the CNAME record.
+
+	ExternalName services are similar to other Kubernetes services; however, instead of being accessed via a clusterIP address,
+	it returns a CNAME record with a value that is defined in the externalName: parameter when creating the service.
+
+
+--------------------------------------------------------------------------
+Difference Between Deployment and Service:
+	In Kubernetes a deployment is a method of launching a pod with containerized applications and ensuring that the necessary
+	number of replicas is always running on the cluster.
+
+	On the other hand, a service is responsible for exposing an interface to those pods, which enables network access from either
+	within the cluster or between external processes and the service.
+
+
+Deployment / ReplicaSet / DemonSet / StatfulSet
+
+https://stackoverflow.com/questions/54257292/statefulset-replicaset-or-daemonset-what-is-the-best-for-a-single-pod
+https://stackoverflow.com/questions/41583672/kubernetes-deployments-vs-statefulsets/48006210#48006210
+
+Deployment:
+	kubectl scale deployment counter --replicas=2
+	
+	Deployments are usually used for stateless applications. However, you can save the state of deployment by attaching a 
+	Persistent Volume to it and make it stateful, but all the pods of a deployment will be sharing the same Volume and data across 
+	all of them will be same.	
+	
+	Deployment is a resource to deploy a stateless application, if using a PVC, all replicas will be using the same Volume and 
+	none of it will have its own state.
+
+
+StatefulSets:
+	Statefulsets is used for Stateful applications, each replica of the pod will have its own state, and will be using its own Volume.
+	
+	You would only need a StatefulSet if you had multiple Pods and needed dedicated persistence per Pod or you had multiple Pods and 
+	the Pods need individual names because they relate to each other (e.g. one is a leader)
+	
+	
+
+DemonSet:
+	A DaemonSet would be used when you want one Pod/replica per Node
+	DaemonSet is a controller similar to ReplicaSet that ensures that the pod runs on all the nodes of the cluster. 
+	If a node is added/removed from a cluster, DaemonSet automatically adds/deletes the pod.
+Volume Mount
+--------------------------------------------------------------------------
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: knote
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: knote
+  template:
+    metadata:
+      labels:
+        app: knote
+    spec:
+      containers:
+        - name: app
+          image: learnk8s/knote-java:1.0.0
+          ports:
+            - containerPort: 8080
+          env:
+            - name: MONGO_URL
+              value: mongodb://mongo:27017/dev
+          imagePullPolicy: Always
+
+The container specification also defines an imagePullPolicy of Always — the instruction forces the Docker image to be downloaded,
+even if it was already downloaded.
+The port that the container listens on (8080)
+--------------------------------------------------------------------------
+
+
+Defining a Service
+A Service resource makes Pods accessible to other Pods or users outside the cluster.
+Without a Service, a Pod cannot be accessed at all.
+A Service forwards requests to a set of Pods:
+In this regard, a Service is akin to a load balancer.
+
+Here is the definition of a Service that makes your Knote Pod accessible from outside the cluster:
+
+----------------------------------------------------------------------------
+apiVersion: v1
+kind: Service
+metadata:
+  name: knote
+spec:
+  selector:
+    app: knote
+  ports:
+    - port: 80
+      targetPort: 8080
+  type: LoadBalancer
+----------------------------------------------------------------------------
+
+In this case, the Service listens for requests on port 80 and forwards them to port 8080 of the target Pods
+
+In this case, the type is LoadBalancer, which makes the exposed Pods accessible from outside the cluster.
+The default Service type is ClusterIP, which makes the exposed Pods only accessible from within the cluster.
+
+Beyond exposing your containers, a Service also ensures continuous availability for your app.
+If one of the Pod crashes and is restarted, the Service makes sure not to route traffic to this container until it is ready again.
+Also, when the Pod is restarted, and a new IP address is assigned, the Service automatically handles the update too.
+
+
+
+--------------------------------------------------------------------------
+MongoDB 
+
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mongo-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 256Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongo
+spec:
+  selector:
+    app: mongo
+  ports:
+    - port: 27017
+      targetPort: 27017
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongo
+spec:
+  selector:
+    matchLabels:
+      app: mongo
+  template:
+    metadata:
+      labels:
+        app: mongo
+    spec:
+      containers:
+        - name: mongo
+          image: mongo
+          ports:
+            - containerPort: 27017
+          volumeMounts:
+            - name: storage
+              mountPath: /data/db
+      volumes:
+        - name: storage
+          persistentVolumeClaim:
+            claimName: mongo-pvc
+
+------------------------------------------------------------------------------------
+PersistentVolumeClaim:
+
+The PersistentVolumeClaim requests a persistent storage volume of 256 MB.
+This volume is made available to the MongoDB container to save its data.
+
+Service:
+ClusterIP makes the Pod accessible from within the cluster, but not from outside — this is fine because the only entity that has 
+to access the MongoDB Pod is your app.
+
+Deployment:
+ -----------------------------------------------------------------------------------------------------
+|	Pods within a cluster can talk to each other through the names of the Services exposing them. |	
+ ------------------------------------------------------------------------------------------------------
+Because the name of the MongoDB Service is mongo.
+If you named your MongoDB service foo, then you would need to change the value of the MONGO_URL variable to monogdb://foo:27017/dev.
+
+--------------------------------------------------------------------------------------------------------------------------
+Kubernetes has an internal DNS system that keeps track of domain names and IP addresses.			         |
+															 |
+Similarly to how Docker provides DNS resolution for containers, Kubernetes provides DNS resolution for Services.	 |
+--------------------------------------------------------------------------------------------------------------------------
+
+kubectl apply -f kube
+kubectl get pods --watch
+minikube service knote --url				-> The command should print the URL of the knote Service.
+kubectl scale --replicas=2 deployment/knote		-> Scaling your app
+kubectl get pods -l app=knote --watch
+
+
+To be scalable, applications must be stateless.
+Stateless means that an instance can be killed restarted or duplicated at any time without any data loss or inconsistent behaviour.
+You must make your app stateless before you can scale it.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

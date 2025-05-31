@@ -1,0 +1,8 @@
+kubectl get node -o wide	-> -o means -output=wide
+kubectl exec -it podname bash	-> it is interactive
+kubectl apply -f pod.yml -n dev	-> -n is for namespace
+
+3000 - 32768
+
+16 - 65536
+2^28   2^16

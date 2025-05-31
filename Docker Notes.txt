@@ -1,0 +1,195 @@
+Advantages of VMs:
+	-> Have the whole Access / Full isolation security
+	-> Have Malware Detection Feature
+	-> Better in Terms of Security
+	-> Have the ownership on the Networks so modifications can be done accordingly / Interactive development
+
+Limitations of VMS
+	-> Costly
+	-> Requires Seperate software developers to handle it
+	-> Not flixible to move
+	-> Issue of Efficiency in The Result
+	-> Complex Structure
+
+Popular VM providers: VirtualBox, VMware
+
+-----------------------------------------
+Containers:
+	-> lightweight software packages that contain all the dependencies required to execute the contained software application
+	-> dependencies include things like system libraries, external third-party code packages, and other operating system level applications.
+
+Pros:					Cons:
+-> Iteration speed			-> Shared host exploits : Containers all share the same underlying hardware system below the 
+-> Robust ecosystem				operating system layer, it is possible that an exploit in one container could break out of 
+						the container and affect the shared hardware. Also have a security risk
+
+Popular Container Provider:
+Docker, Linux Container, RKT(Roket)
+
+------------------------------------------
+
+Difference Between VM and Containers:
+
+The key differentiator between containers and virtual machines is that virtual machines virtualize an entire machine down to the
+hardware layers and containers only virtualize software layers above the operating system level.
+
+
+VM size is very large.						While the size of container is very light; i.e. a few megabytes.
+VM uses a lot of system memory.					While containers require very less memory.
+VM is more secure.						While containers are less secure.
+Each virtual machine runs its own guest operating system	They share a common operating system(bin/lib folder)
+guest Os( whole different OS)
+
+------------------------------------------
+
+Docker 
+
+https://www.freecodecamp.org/news/what-is-docker-used-for-a-docker-container-tutorial-for-beginners/
+https://www.infoworld.com/article/3204171/what-is-docker-the-spark-for-the-container-revolution.html
+
+Docker is a software platform for building applications based on containers—small and lightweight execution environments that make 
+shared use of the operating system kernel but otherwise run in isolation from one another. While containers have been used in Linux and 
+Unix systems for some time, Docker, an open source project launched in 2013, helped popularize the technology by making it easier than 
+ever for developers to package their software to “build once and run anywhere.”
+
+Dockerfile	-> Have set of instructions used to build an Docker Image. Includes langugage, OS, Environment Variable, port.
+Docker Image	-> Containing the instruction of which software component the container will run and how.
+Docker run Utility -> Launch the container
+Docker Hub	-> Store images
+Docker Engine   -> client-server technology that creates and runs the containers.
+Docker Compose  -> Docker Compose is a command-line tool that uses YAML/JSON files to define and run multicontainer Docker applications. 
+		   It allows you to create, start, stop, and rebuild all the services from your configuration and view the status and
+		   log output of all running services. 
+Docker Desktop   -> 
+
+Docker Advantages:
+Docker containers ease orchestration and scaling
+Docker containers enable composability
+Docker containers are minimalistic and enable portability.
+
+Docker Disadvantage:
+Docker containers are stateless and immutable	->  That image is immutable by default—once created, it doesn’t change.
+						    Container volume need to be persisted seperately
+
+
+---------------------------------------
+
+Docker Architecture:
+https://www.javatpoint.com/docker-architecture
+
+Docker Daemon:
+	 Docker daemon runs on the host operating system.
+	 It is responsible for running containers to manage docker services. Docker daemon communicates with other daemons.
+	 It offers various Docker objects such as images, containers, networking, and storage.
+
+Docker Architecture:
+	Docker follows Client-Server architecture, which includes the three main components that are Docker Client, Docker Host,
+	and Docker Registry.
+
+	Docker Client:	
+		Communication with Deamon(Server), REST APIs
+		Docker Client uses Command Line Interface (CLI) to run the following commands
+	Docker HOST:
+		Environment to run and execute the application
+		Container images, containers, storage, networks
+	Docker Registry:
+		Manages and stores the Docker Images
+		Public Registry
+		Private Registry
+	
+	Docker Objects:
+		Images
+		Containers
+		Docker Networking: has Bridge default network driver. Used to communicate with same docker host. 
+		Docker Storage: Data Volume -> name volume, list volume, persistence storage, container associates with this volume.
+						Directory Mount.
+		
+
+------------------------------------------
+Docker Commands
+
+docker images	-> Shows all Images
+docker ps	-> shows all container running
+docker ps -a	-> shows all container that are stopped running
+
+docker run nginx:1.23.2		-> run the Image
+docker run -d nginx:1.23.2	-> Run in detached Mode
+
+docker rm -f containerId   -> force remove container
+docker rmi ImageId	   -> remove Image
+docker rmi if ImageId	   -> remove Image forcely
+docker stop containerId    -> stops the container
+docker pull image:tag	   -> download from docker hub
+
+
+docker exec -it containerId bash	-> Move inside a running container bash
+
+docker build . -t imageName:v1			-> command to build the Image
+
+
+
+
+-----------Login---------------------
+docker login
+docker tag knote-java <username>/knote-java:1.0.0
+docker push username/knote-java:1.0.0
+
+
+
+--------------Project Commands---------------------
+
+
+********************************************************
+DockerFile
+
+FROM adoptopenjdk/openjdk11:jdk-11.0.2.9-slim
+WORKDIR /opt
+ENV PORT 8080
+EXPOSE 8080
+COPY target/*.jar /opt/app.jar
+ENTRYPOINT exec java $JAVA_OPTS -jar app.jar
+********************************************************
+
+docker build -t knote-java .	-> Build an Image
+
+docker network create knote	-> Create a network
+
+
+docker run \
+  --name=mongo \		-> name of the container
+  --rm \			-> cleans up the network and removes file system
+  --network=knote \		-> Created network
+  mongo				-> name of the image
+
+
+docker run \
+  --name=knote-java \				
+  --rm \	
+  --network=knote \				-> Same network where MongoDB resides
+  -p 8080:8080 \				-> publishes port 8080(second) of container to port 8080(first) of your local machine
+  -e MONGO_URL=mongodb://mongo:27017/dev \	-> environment Variable is set mongo is precisely  the name that you gave to the MongoDB container 
+  knote-java					-> name of the image
+
+
+docker stop mongo knote-java			-> Stop the container
+docker rm mongo knote-java			-> Remove the container
+
+
+docker ps -> process status
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

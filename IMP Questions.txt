@@ -1,0 +1,111 @@
+IAAS, PAAS def
+
+Elastic Container Service
+
+
+Features of kubernates
+	Self Healing	
+
+https://www.geeksforgeeks.org/what-is-dockerfile-syntax/
+
+Default Service type is ClusterIP
+
+12 Factor App
+https://www.srijan.net/resources/blog/12-factor-apps-and-their-benefits-for-cloud-native-applications
+
+
+Teams should hold a sprint retrospective after a sprint review and before the planning meeting for the next sprint.
+
+
+S3(Simple Storage Services) is a object storage
+
+S3 is always encypted
+
+Docker File  is a text document that contains all the commands a user could call on the command line to assemble an image
+
+Ec2 = Elastic Compute Cloud
+
+EKS
+
+Instead of organizing files in a directory hierarchy, object storage systems store files in a flat organization of containers 
+(called "buckets" in Amazon S3) and use unique IDs (called "keys" in S3) to retrieve them.
+
+Docker uses a technology called namespaces to provide the isolated workspace called the container.
+
+When you create a new container, you add a new writable layer on top of the underlying layers. 
+This layer is often called the “container layer”. All changes made to the running container, such as writing new files,
+ modifying existing files, and deleting files, are written to this thin writable container layer.
+
+-------------------------------------
+Different Types of Instances
+1) General Purpose
+2) Memory Optimized 
+3) Stogage Optimized
+
+
+
+
+------------------------------------------------------------------------------------------------------------
+Kubernates
+
+Kubeadm -> Intinalizes the Cluster, etcd, Scheduler, Control Plane
+KubeCTL -> Command Line Interface
+Kubelet -> It is an Agent which is needed
+
+
+In EKS kubeadm no required it will be controlled by EKS, No need to install Kublet as well
+We need Kubectl in EKS 
+
+
+----------------------------------------------------
+Types of deployment strategies
+https://spot.io/resources/kubernetes-autoscaling/5-kubernetes-deployment-strategies-roll-out-like-the-pros/
+
+	1) Rolling deployment:
+		Replaces pods running the old version of the application with the new version, one by one, without downtime to the cluster.
+	2) Recreate
+	 	Terminates all the pods and replaces them with the new version.
+	3) Ramped slow rollout
+		Rolls out replicas of the new version, while in parallel, shutting down old replicas. 
+	4) Best-effort controlled rollout
+		Specifies a “max unavailable” parameter which indicates what percentage of existing pods can be unavailable during 
+		the upgrade, enabling the rollout to happen much more quickly.
+	5) Canary deployment
+		Uses a progressive delivery approach, with one version of the application serving most users, and another, newer 
+		version serving a small pool of test users. The test deployment is rolled out to more users if it is successful.
+
+	
+Types of Load Balancer :
+https://www.armosec.io/glossary/kubernetes-load-balancer/
+
+Kubernetes primarily has two types of load balancers:
+
+●     Internal Load Balancers: 
+	These are responsible for routing requests between containers of the same Virtual Private Cloud. 
+	They also perform in-cluster load balancing and service discovery.
+
+●     External Load Balancers: 
+	These are responsible for assigning resources to incoming external HTTP Requests. 
+	Based on the availability, the set of services provided by pods and containers, the HTTP Requests are routed to specific clusters, 
+	identified by their IP addresses, and specific nodes, identified by a port number. 
+
+
+
+NATS
+ID
+Database
+Hybrid Mode
+
+
+
+
+	
+
+
+
+
+
+
+
+
+
