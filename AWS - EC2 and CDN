@@ -1,0 +1,175 @@
+Availability Zone:
+	An AZ is a standalone data center or set of data centers within a Region. 
+	Each AZ operates independently, so a failure in one won't affect others.
+	In disaster recovery plans, enterprises use multiple AZs to increase redundancy and reliability.
+
+EC2: 
+	OnDemand Computing
+	RAM and ROM is provided
+	
+	Features:
+		Functionality
+		Set of AMIs
+		Create a new AMI and store it for future purposes.
+	
+	Operating System:	
+		Selecting from AMI
+		Also can upload our own Operating System
+		Amazon Linux, Red Hat Linux, 	Ubuntu, Windows, 
+	
+	Software:
+	Scalable and Relaible:
+		Flixible to volume
+		Large traffic can be managed
+
+	Elastic Load Balancer:
+		
+
+Elastic Load Balancer:
+	https://www.geeksforgeeks.org/elastic-load-balancer-in-aws/
+
+	Features of the Cloud: 
+
+		No up-front investment
+		Lowering operating cost
+		Highly scalable and efficient
+		Easy access
+		Reducing business risks and maintenance expenses
+
+	AWS services are pay as per you go:
+	
+
+	Elastic Load Balancer:
+		Manages traffic and distributes traffic among the backend servers
+		Continuous Health Checkup 
+		In case any of registered target fails the health check, the load balancer will not route traffic to that unhealthy target. 
+		Thereby ensuring your application is highly available and fault tolerant.
+	
+	Types of Load Balancer:
+		1)  Classic Load Balancer
+			It is the traditional form of load balancer which was used initially. 
+			It distributes the traffic among the instances and is not intelligent enough to support host-based routing or path-based routing. 
+			It ends up reducing efficiency and performance in certain situations. 
+			It is operated on connection level as well as request level. 
+			Classic  Load Balancer is in between the transport layer (TCP/SSL) or the application layer (HTTP/HTTPS) .
+		
+		2) Application Load Balancer
+			This type of Load Balancer is used when decisions are to be made related to  HTTP and HTTPS traffic routing.
+			It supports path-based routing and host-based routing. 
+			This load balancer works at the Application layer of the OSI Model. 
+			The load balancer also supports dynamic host port mapping.
+			
+		3) Network Load Balancer
+			This type of load balancer works at the transport layer(TCP/SSL) of the OSI model. 
+			It’s capable of handling millions of requests per second.  It is mainly used for load balancing TCP traffic.
+
+
+	S3 bucket:
+
+	AWS Database Servicer:
+		https://intellipaat.com/blog/aws-database-services/
+	
+		Relational Databases:
+			Amazon RDS
+			Amazon Redshift
+			Amazon Aurora
+
+		Key–Value Database:
+			Amazon DynamoDB
+		
+		In-memory Database:
+			 This type of database is primarily based on the main memory for computer data storage. 
+			Basically, an in-memory database keeps the whole data in the RAM. 
+			Meaning that each time you access the data, you only access the main memory and not any disk.
+			And the reason that the main memory is faster than any disk is why in-memory databases are so popular.
+
+			Response time, Scalability, Complete management
+			
+			Eg: Amazon ElastiCache
+
+	Route 53
+		https://www.geeksforgeeks.org/introduction-to-amazon-route53/
+
+		Route end users to your site reliably with globally-dispersed Domain Name System (DNS) servers and automatic scaling.
+		Set up your DNS routing in minutes with domain name registration and straightforward visual traffic flow tools.
+		Customize your DNS routing policies to reduce latency, improve application availability, and maintain compliance.
+
+							( [AWS Management Console] [Amazon Route 53 SDK/API] )
+							
+		End User	-> DNS Resolver	-> Health Checkups	-> Endpoint Instances
+							
+						AWS Cloud Watch(Monitoring metrics and alarms)
+
+
+	------------------------------------------------------------------------------------------------------------------------------------
+	
+	CNAME:
+		https://support.dnsimple.com/articles/cname-record/
+
+		A Canonical Name or CNAME record is a type of DNS record that maps an alias name to a true or canonical domain name. 
+		CNAME records are typically used to map a subdomain such as www or mail to the domain hosting that subdomain's content.
+
+		Eg: A common example is when you have both example.com and www.example.com pointing to the same application and hosted by the same server. 
+	
+		Restrictions:
+			1) A CNAME record must always point to another domain name, never directly to an IP address.
+			2) A CNAME record cannot co-exist with another record for the same name. It’s not possible to have both a 
+			   CNAME and TXT record for www.example.com.
+			3) A CNAME can point to another CNAME, although this configuration is generally not recommended for performance reasons.
+
+
+			
+	Configuration and Management:
+
+	CloudFront in AWS:
+		Latency -> Delay between request and response.
+		
+		Even if Auto Scaling the latency can be removed .
+		In order to reduce the latency we use the Content Delivey network or in AWS we say is as AWS CloudFront.
+
+		AutoScaling in all the zone can improve the user experience(LATENCY) with the website but this will lead to slow sync between DBs
+
+
+		In CloudFront
+			We create an edge location where we keep the cache of data for temporary basis
+			In whole World we have 205 Edge locations 
+			All Edge is touch with the Origin Location(AZ where our project exists)
+
+	
+		Example: 
+			-> Suppose our server is present in US and User is sending a request to amazon.com from India so that request goes to Edge location and 
+				that is guided by Route53 in AWS case. and then edge location will find whether there is some catch related to that if it is 
+				then response is sent back but if it is not then the request is redirected to US server and stores the cache now on Edgelocation
+			-> Communication between Edge location and the Origin server is very high
+			-> Edge location stores the popular searches.
+			-> If there is any large request then Edge Location keeps on sharing that request to the user and as well as take from the source
+				example: downloading 1GB data
+			-> Data is present at Edge location for 24hrs by default we can configure that time.
+
+			Advantages:
+				1) Reduce Latency
+				2) Cost effective as we dont have to keep any extra servers to different regions
+				3) Less load to the actual Servers
+
+			
+			Eg: Hirarchy of Student Teacher Principal -> 2000 student dont report to the Principal the report the their respective teachers and if
+				if there is any update then teacher get things updated from principal and convey back to the student.
+ 
+
+		AWS Cloudfront is an Webservice that givers business and web application developers an easy and cost effectiveness way to distribute content 
+		with low latency and high data transfer speed.
+
+					
+		User is connected to Edge location based on the latency. The Edge location that will give less latency the DNS resolver will connect the user 
+		to that Edge location.
+
+
+		Regional Cache / Regional Edge Location (There are total 11 Regional edge location)
+			It is place where the Original Server will be stored so that edge location can directly communicate to Regional Edge location
+			Regional Edge location act as cache and data stored is for long time..
+
+			
+		Cloud Front is a global Service
+		Speeds up the distribution of html, css, js 
+		Delivers a world wide networks of data centers called edge location
+		
