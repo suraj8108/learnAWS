@@ -1,0 +1,90 @@
+app_deployment
+--------------
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spring-app-deploy
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: spring-app-red
+  template:
+    metadata:
+      labels:
+        app: spring-app-red
+    spec:
+      containers:
+        - name: spring-app
+          image: ompatre/sprint2:v1
+          ports:
+            - containerPort: 9989
+          env:
+            - name: SPRING_DATASOURCE_URL
+              value: jdbc:postgresql://db-postgres:5432/compose-postgres
+            - name: SPRING_DATASOURCE_USERNAME
+              value: compose-postgres
+            - name: SPRING_DATASOURCE_PASSWORD
+              value: compose-postgres
+            - name: SPRING_JPA_HIBERNATE_DDL_AUTO
+              value: update
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: svc-app
+spec:
+  selector:
+    app: spring-app-red
+  ports:
+    - port: 80
+      targetPort: 9989
+  type: LoadBalancer
+
+
+
+
+db deployment
+-------------
+apiVersion: v1
+kind: Service
+metadata:
+  name: db-postgres
+spec:
+  selector:
+    app: db-postgres
+  ports:
+    - port: 5432
+      targetPort: 5432
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: db-postgres-deploy
+spec:
+  serviceName: db-postgres
+  selector:
+    matchLabels:
+      app: db-postgres
+  template:
+    metadata:
+      labels:
+        app: db-postgres
+    spec:
+      containers:
+        - name: db-postgres
+          image: postgres:13.1-alpine
+          ports:
+            - containerPort: 5432
+          env:
+            - name: POSTGRES_USER
+              value: compose-postgres
+            - name: POSTGRES_PASSWORD
+              value: compose-postgres
+          volumeMounts:
+            - name: user-data
+              mountPath: /var/lib/postgresql/data
+      volumes:
+        - name: user-data
+          hostPath:
+            path: /var/data
